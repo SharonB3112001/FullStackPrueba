@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/models/user.dart';
-import '../lib/models/address.dart';
-import '../lib/providers/user_provider.dart';
+import 'package:fullstack_prueba/models/user.dart';
+import 'package:fullstack_prueba/models/address.dart';
+import 'package:fullstack_prueba/providers/user_provider.dart';
 
 void main() {
   group('UserProvider Tests', () {

@@ -20,4 +20,14 @@ class Validators {
     }
     return null;
   }
+
+  static String? validateBirthDate(DateTime? value) {
+    if (value == null) {
+      return "La fecha de nacimiento es requerida";
+    }
+    if (value.isAfter(DateTime.now())) {
+      return "La fecha no puede ser en el futuro";
+    }
+    return null;
+  }
 }

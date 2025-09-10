@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/address.dart';
 import '../providers/user_provider.dart';
 import 'user_detail_screen.dart';
+import '../utils/validators.dart';
 
 class AddressFormScreen extends StatefulWidget {
   const AddressFormScreen({super.key});
@@ -66,23 +67,23 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                         controller: _countryController,
                         decoration: _inputDecoration('País', Icons.flag),
                         validator: (value) =>
-                            value!.isEmpty ? 'Ingrese un país' : null,
+                            Validators.validateNotEmpty(value, 'País'),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _departmentController,
                         decoration:
                             _inputDecoration('Departamento', Icons.map),
-                        validator: (value) =>
-                            value!.isEmpty ? 'Ingrese un departamento' : null,
+                        validator: (value) => Validators.validateNotEmpty(
+                            value, 'Departamento'),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _municipalityController,
                         decoration:
                             _inputDecoration('Municipio', Icons.location_city),
-                        validator: (value) =>
-                            value!.isEmpty ? 'Ingrese un municipio' : null,
+                        validator: (value) => Validators.validateNotEmpty(
+                            value, 'Municipio'),
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(

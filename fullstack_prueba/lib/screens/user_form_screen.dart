@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
 import 'address_form_screen.dart';
+import '../utils/validators.dart';
 
 class UserFormScreen extends StatefulWidget {
   const UserFormScreen({super.key});
@@ -59,7 +60,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                           ),
                         ),
                         validator: (value) =>
-                            value!.isEmpty ? 'Ingrese un nombre' : null,
+                            Validators.validateNotEmpty(value, 'Nombre'),
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
@@ -72,7 +73,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                           ),
                         ),
                         validator: (value) =>
-                            value!.isEmpty ? 'Ingrese un apellido' : null,
+                            Validators.validateNotEmpty(value, 'Apellido'),
                       ),
                       const SizedBox(height: 16),
                       Row(

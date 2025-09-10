@@ -23,11 +23,16 @@ void main() {
     test('Fecha de nacimiento no puede ser nula y debe ser pasada', () {
       DateTime? birthDate;
 
-      bool isValid = birthDate != null && birthDate.isBefore(DateTime.now());
+      bool isValidBirthDate(DateTime? d, DateTime now) {
+        return d != null && d.isBefore(now);
+      }
+
+      final now = DateTime.now();
+      bool isValid = isValidBirthDate(birthDate, now);
       expect(isValid, false);
 
       birthDate = DateTime(1990, 5, 20);
-      isValid = birthDate != null && birthDate.isBefore(DateTime.now());
+      isValid = isValidBirthDate(birthDate, now);
       expect(isValid, true);
     });
 
