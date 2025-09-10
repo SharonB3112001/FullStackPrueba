@@ -71,7 +71,6 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Botón Atrás
                       Container(
                         width: double.infinity,
                         margin: EdgeInsets.only(bottom: isSmallScreen ? 16 : 20),
@@ -225,7 +224,6 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                   
                       SizedBox(height: isSmallScreen ? 30 : 40),
                       
-                      // Botón principal
                       SizedBox(
                         width: double.infinity,
                         height: isSmallScreen ? 50 : 60,

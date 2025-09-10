@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => UserProvider(),
       child: MaterialApp(
-        title: 'Flutter User Form',
+        title: 'User Form',
         theme: ThemeData(primarySwatch: Colors.blue),
         home: const LandingPageScreen(),
       ),

@@ -54,7 +54,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Icono principal
                       Container(
                         padding: EdgeInsets.all(isSmallScreen ? 24 : 32),
                         decoration: BoxDecoration(
@@ -77,7 +76,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                 
                       SizedBox(height: isSmallScreen ? 30 : 40),
                       
-                      // Título principal
                       Text(
                         '¡Bienvenido!',
                         style: TextStyle(
@@ -90,7 +88,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                       
                       SizedBox(height: isSmallScreen ? 12 : 16),
                       
-                      // Subtítulo
                       Text(
                         'Registra tu información personal\ny gestiona tus direcciones',
                         textAlign: TextAlign.center,
@@ -104,7 +101,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                 
                       SizedBox(height: isSmallScreen ? 40 : 60),
                       
-                      // Características
                       Container(
                         padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
                         decoration: BoxDecoration(
@@ -140,7 +136,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                 
                       SizedBox(height: isSmallScreen ? 30 : 50),
                       
-                      // Indicador de carga
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: isSmallScreen ? 16 : 20, 
@@ -180,7 +175,6 @@ class _LandingPageScreenState extends State<LandingPageScreen> {
                 
                       SizedBox(height: isSmallScreen ? 16 : 20),
                       
-                      // Texto adicional
                       Text(
                         'Redirigiendo automáticamente',
                         style: TextStyle(

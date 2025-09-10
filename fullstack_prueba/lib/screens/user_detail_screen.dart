@@ -94,7 +94,6 @@ class UserDetailScreen extends StatelessWidget {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Título de la sección
                             Container(
                               margin: EdgeInsets.only(bottom: isSmallScreen ? 20 : 30),
                               child: Text(
@@ -108,7 +107,6 @@ class UserDetailScreen extends StatelessWidget {
                               ),
                             ),
                             
-                            // Card de información del usuario
                             Container(
                               padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
                               decoration: BoxDecoration(
@@ -175,7 +173,6 @@ class UserDetailScreen extends StatelessWidget {
                             
                             SizedBox(height: isSmallScreen ? 20 : 30),
                             
-                            // Título de direcciones
                             Text(
                               'Direcciones',
                               style: TextStyle(
@@ -186,7 +183,6 @@ class UserDetailScreen extends StatelessWidget {
                             ),
                             SizedBox(height: isSmallScreen ? 12 : 16),
                             
-                            // Lista de direcciones
                             user.addresses.isEmpty
                                 ? Container(
                                     padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
