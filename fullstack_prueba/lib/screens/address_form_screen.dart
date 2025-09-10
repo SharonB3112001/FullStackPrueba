@@ -21,12 +21,21 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: Colors.blueAccent),
+      labelStyle: const TextStyle(color: Colors.white70),
+      prefixIcon: Icon(icon, color: Colors.white70),
       filled: true,
-      fillColor: Colors.blue.shade50,
+      fillColor: Colors.white.withValues(alpha: 0.1),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.white, width: 2),
       ),
     );
   }
@@ -36,118 +45,223 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Agregar Dirección'),
-        backgroundColor: Colors.blueAccent,
-        centerTitle: true,
-        elevation: 4,
-      ),
       body: Container(
-        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white, Colors.blue.shade50],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue.shade400,
+              Colors.blueAccent,
+              Colors.deepPurple.shade400,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        child: Column(
-          children: [
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Form(
-                  key: _formKey,
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isSmallScreen = constraints.maxHeight < 600;
+              
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(isSmallScreen ? 16.0 : 24.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - (isSmallScreen ? 32 : 48),
+                  ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextFormField(
-                        controller: _countryController,
-                        decoration: _inputDecoration('País', Icons.flag),
-                        validator: (value) =>
-                            Validators.validateNotEmpty(value, 'País'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _departmentController,
-                        decoration:
-                            _inputDecoration('Departamento', Icons.map),
-                        validator: (value) => Validators.validateNotEmpty(
-                            value, 'Departamento'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _municipalityController,
-                        decoration:
-                            _inputDecoration('Municipio', Icons.location_city),
-                        validator: (value) => Validators.validateNotEmpty(
-                            value, 'Municipio'),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            final address = Address(
-                              country: _countryController.text,
-                              department: _departmentController.text,
-                              municipality: _municipalityController.text,
-                            );
-                            userProvider.addAddress(address);
-
-                            _countryController.clear();
-                            _departmentController.clear();
-                            _municipalityController.clear();
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Dirección agregada correctamente"),
-                                backgroundColor: Colors.green,
+                      // Botón Atrás
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: isSmallScreen ? 16 : 20),
+                        child: Row(
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back, 
+                                size: isSmallScreen ? 16 : 18
                               ),
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.add_location_alt),
-                        label: const Text("Agregar Dirección"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 14),
-                          textStyle: const TextStyle(fontSize: 16),
+                              label: Text(
+                                'Atrás',
+                                style: TextStyle(fontSize: isSmallScreen ? 12 : 14),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isSmallScreen ? 16 : 20, 
+                                  vertical: isSmallScreen ? 10 : 12
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                  
+                      // Título de la sección
+                      Container(
+                        margin: EdgeInsets.only(bottom: isSmallScreen ? 20 : 30),
+                        child: Text(
+                          'Agregar Dirección',
+                          style: TextStyle(
+                            fontSize: isSmallScreen ? 24 : 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                      ),
+                  
+                      // Card del formulario
+                      Container(
+                        padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(isSmallScreen ? 16 : 20),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: isSmallScreen ? 15 : 20,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _countryController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: _inputDecoration('País', Icons.flag),
+                            validator: (value) =>
+                                Validators.validateNotEmpty(value, 'País'),
+                          ),
+                          SizedBox(height: isSmallScreen ? 16 : 20),
+                          TextFormField(
+                            controller: _departmentController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration:
+                                _inputDecoration('Departamento', Icons.map),
+                            validator: (value) => Validators.validateNotEmpty(
+                                value, 'Departamento'),
+                          ),
+                          SizedBox(height: isSmallScreen ? 16 : 20),
+                          TextFormField(
+                            controller: _municipalityController,
+                            style: const TextStyle(color: Colors.white),
+                            decoration:
+                                _inputDecoration('Municipio', Icons.location_city),
+                            validator: (value) => Validators.validateNotEmpty(
+                                value, 'Municipio'),
+                          ),
+                          SizedBox(height: isSmallScreen ? 24 : 30),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                final address = Address(
+                                  country: _countryController.text,
+                                  department: _departmentController.text,
+                                  municipality: _municipalityController.text,
+                                );
+                                userProvider.addAddress(address);
+
+                                _countryController.clear();
+                                _departmentController.clear();
+                                _municipalityController.clear();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text("Dirección agregada correctamente"),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.only(
+                                      top: 8,
+                                      left: 16,
+                                      right: 16,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            icon: Icon(
+                              Icons.add_location_alt,
+                              size: isSmallScreen ? 16 : 18,
+                            ),
+                            label: Text(
+                              "Agregar Dirección",
+                              style: TextStyle(fontSize: isSmallScreen ? 14 : 16),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white.withValues(alpha: 0.2),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isSmallScreen ? 20 : 24, 
+                                vertical: isSmallScreen ? 12 : 14
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                      SizedBox(height: isSmallScreen ? 30 : 40),
+                      
+                      // Botón principal
+                      SizedBox(
+                        width: double.infinity,
+                        height: isSmallScreen ? 50 : 60,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const UserDetailScreen()),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.person,
+                        size: isSmallScreen ? 16 : 18,
+                      ),
+                      label: Text(
+                        'Ver Detalle del Usuario',
+                        style: TextStyle(fontSize: isSmallScreen ? 14 : 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.blueAccent,
+                        elevation: 8,
+                        shadowColor: Colors.black.withValues(alpha: 0.3),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                  ),
                     ],
                   ),
                 ),
-              ),
-            ),
-            const Spacer(),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const UserDetailScreen()),
-                );
-              },
-              icon: const Icon(Icons.person),
-              label: const Text('Ver Detalle del Usuario'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                textStyle:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            )
-          ],
+              );
+            },
+          ),
         ),
       ),
     );

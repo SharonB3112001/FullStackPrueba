@@ -11,121 +11,266 @@ class UserDetailScreen extends StatelessWidget {
     final user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalle del Usuario'),
-        backgroundColor: Colors.blueAccent,
-        centerTitle: true,
-        elevation: 4,
-      ),
       body: Container(
-        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white, Colors.blue.shade50],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue.shade400,
+              Colors.blueAccent,
+              Colors.deepPurple.shade400,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        child: user == null
-            ? const Center(
-                child: Text(
-                  'No hay usuario creado',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 28,
-                                backgroundColor: Colors.blueAccent,
-                                child: Icon(Icons.person,
-                                    size: 32, color: Colors.white),
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isSmallScreen = constraints.maxHeight < 600;
+              
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(isSmallScreen ? 16.0 : 24.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - (isSmallScreen ? 32 : 48),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Botón Atrás
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: isSmallScreen ? 16 : 20),
+                        child: Row(
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back, 
+                                size: isSmallScreen ? 16 : 18
                               ),
-                              const SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${user.firstName} ${user.lastName}",
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "Nacimiento: ${DateFormat('dd/MM/yyyy').format(user.birthDate)}",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey.shade700,
-                                    ),
+                              label: Text(
+                                'Atrás',
+                                style: TextStyle(fontSize: isSmallScreen ? 12 : 14),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isSmallScreen ? 16 : 20, 
+                                  vertical: isSmallScreen ? 10 : 12
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  
+                      user == null
+                          ? Container(
+                              padding: EdgeInsets.all(isSmallScreen ? 30 : 40),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(isSmallScreen ? 16 : 20),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'No hay usuario creado',
+                                style: TextStyle(
+                                  fontSize: isSmallScreen ? 16 : 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Título de la sección
+                            Container(
+                              margin: EdgeInsets.only(bottom: isSmallScreen ? 20 : 30),
+                              child: Text(
+                                'Detalle del Usuario',
+                                style: TextStyle(
+                                  fontSize: isSmallScreen ? 24 : 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                            ),
+                            
+                            // Card de información del usuario
+                            Container(
+                              padding: EdgeInsets.all(isSmallScreen ? 16 : 24),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(isSmallScreen ? 16 : 20),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.3),
+                                  width: 1,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: isSmallScreen ? 15 : 20,
+                                    offset: const Offset(0, 10),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Direcciones',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: user.addresses.isEmpty
-                        ? const Center(
-                            child: Text(
-                              "No hay direcciones registradas",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: user.addresses.length,
-                            itemBuilder: (context, index) {
-                              final addr = user.addresses[index];
-                              return Card(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                elevation: 3,
-                                child: ListTile(
-                                  leading: const Icon(Icons.location_on,
-                                      color: Colors.blueAccent),
-                                  title: Text(
-                                    '${addr.country} - ${addr.department}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha: 0.2),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.person,
+                                          size: 32,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${user.firstName} ${user.lastName}",
+                                              style: TextStyle(
+                                                fontSize: isSmallScreen ? 18 : 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(height: isSmallScreen ? 2 : 4),
+                                            Text(
+                                              "Nacimiento: ${DateFormat('dd/MM/yyyy').format(user.birthDate)}",
+                                              style: TextStyle(
+                                                fontSize: isSmallScreen ? 12 : 14,
+                                                color: Colors.white70,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  subtitle: Text(addr.municipality),
-                                ),
-                              );
-                            },
-                          ),
+                                ],
+                              ),
+                            ),
+                            
+                            SizedBox(height: isSmallScreen ? 20 : 30),
+                            
+                            // Título de direcciones
+                            Text(
+                              'Direcciones',
+                              style: TextStyle(
+                                fontSize: isSmallScreen ? 18 : 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: isSmallScreen ? 12 : 16),
+                            
+                            // Lista de direcciones
+                            user.addresses.isEmpty
+                                ? Container(
+                                    padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: Colors.white.withValues(alpha: 0.3),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "No hay direcciones registradas",
+                                      style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: isSmallScreen ? 14 : 16,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : Column(
+                                    children: user.addresses.map((addr) {
+                                      return Container(
+                                        margin: EdgeInsets.only(bottom: isSmallScreen ? 8 : 12),
+                                        padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: Colors.white.withValues(alpha: 0.3),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white.withValues(alpha: 0.2),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: const Icon(
+                                                Icons.location_on,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '${addr.country} - ${addr.department}',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.white,
+                                                      fontSize: isSmallScreen ? 14 : 16,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    addr.municipality,
+                                                    style: TextStyle(
+                                                      color: Colors.white70,
+                                                      fontSize: isSmallScreen ? 12 : 14,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                          ],
+                        ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 }
+
